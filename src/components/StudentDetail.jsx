@@ -54,6 +54,8 @@ function StudentDetail() {
 
   if (!student) return <div>กำลังโหลด...</div>;
 
+  const fullName = `${student.prefix || ''} ${student.first_name || ''} ${student.last_name || ''}`.trim();
+
   return (
     <div className="student-detail">
       <button onClick={() => navigate('/students')} className="btn-back">
@@ -71,11 +73,7 @@ function StudentDetail() {
             </div>
             <div className="info-item">
               <label>ชื่อ-สกุล:</label>
-              <span>{student.full_name}</span>
-            </div>
-            <div className="info-item">
-              <label>วันเกิด:</label>
-              <span>{student.birth_date}</span>
+              <span>{fullName}</span>
             </div>
             <div className="info-item">
               <label>อายุ:</label>
@@ -83,35 +81,39 @@ function StudentDetail() {
             </div>
             <div className="info-item">
               <label>เลขบัตรประชาชน:</label>
-              <span>{student.national_id}</span>
+              <span>{student.citizen_id}</span>
             </div>
             <div className="info-item">
               <label>เบอร์โทรศัพท์:</label>
-              <span>{student.phone}</span>
+              <span>{student.tel}</span>
             </div>
             <div className="info-item">
-              <label>อีเมล:</label>
-              <span>{student.email}</span>
+              <label>อีเมลส่วนตัว:</label>
+              <span>{student.personal_email}</span>
             </div>
             <div className="info-item">
-              <label>ที่อยู่ปัจจุบัน:</label>
-              <span>{student.current_address}</span>
+              <label>อีเมล RSU:</label>
+              <span>{student.rsu_email}</span>
             </div>
             <div className="info-item">
               <label>จบการศึกษาจาก:</label>
-              <span>{student.undergraduate_from}</span>
+              <span>{student.graduated_from}</span>
             </div>
             <div className="info-item">
-              <label>GPA ป.ตรี:</label>
-              <span>{student.undergraduate_gpa}</span>
+              <label>GPA:</label>
+              <span>{student.gpa}</span>
             </div>
             <div className="info-item">
               <label>เลขที่ใบประกอบวิชาชีพ:</label>
-              <span>{student.professional_license}</span>
+              <span>{student.license_number}</span>
             </div>
             <div className="info-item">
-              <label>ที่ทำงานปัจจุบัน:</label>
-              <span>{student.current_workplace}</span>
+              <label>ที่อยู่ที่ทำงาน:</label>
+              <span>{student.work_addr}</span>
+            </div>
+            <div className="info-item">
+              <label>ตำแหน่งงาน:</label>
+              <span>{student.work_position}</span>
             </div>
             <div className="info-item">
               <label>อาจารย์ที่ปรึกษาหลัก:</label>
@@ -135,11 +137,32 @@ function StudentDetail() {
         <form onSubmit={handleUpdate} className="edit-form">
           <div className="form-grid">
             <div className="form-group">
-              <label>ชื่อ-สกุล:</label>
+              <label>คำนำหน้า:</label>
+              <select
+                value={formData.prefix || ''}
+                onChange={(e) => setFormData({ ...formData, prefix: e.target.value })}
+              >
+                <option value="">เลือกคำนำหน้า</option>
+                <option value="นาย">นาย</option>
+                <option value="นาง">นาง</option>
+                <option value="นางสาว">นางสาว</option>
+                <option value="ดร.">ดร.</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>ชื่อ:</label>
               <input
                 type="text"
-                value={formData.full_name || ''}
-                onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                value={formData.first_name || ''}
+                onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label>นามสกุล:</label>
+              <input
+                type="text"
+                value={formData.last_name || ''}
+                onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
               />
             </div>
             <div className="form-group">
@@ -154,24 +177,39 @@ function StudentDetail() {
               <label>เบอร์โทรศัพท์:</label>
               <input
                 type="text"
-                value={formData.phone || ''}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                value={formData.tel || ''}
+                onChange={(e) => setFormData({ ...formData, tel: e.target.value })}
               />
             </div>
             <div className="form-group">
-              <label>อีเมล:</label>
+              <label>อีเมลส่วนตัว:</label>
               <input
                 type="email"
-                value={formData.email || ''}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                value={formData.personal_email || ''}
+                onChange={(e) => setFormData({ ...formData, personal_email: e.target.value })}
               />
             </div>
             <div className="form-group">
-              <label>ที่ทำงานปัจจุบัน:</label>
+              <label>อีเมล RSU:</label>
+              <input
+                type="email"
+                value={formData.rsu_email || ''}
+                onChange={(e) => setFormData({ ...formData, rsu_email: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label>ที่อยู่ที่ทำงาน:</label>
+              <textarea
+                value={formData.work_addr || ''}
+                onChange={(e) => setFormData({ ...formData, work_addr: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label>ตำแหน่งงาน:</label>
               <input
                 type="text"
-                value={formData.current_workplace || ''}
-                onChange={(e) => setFormData({ ...formData, current_workplace: e.target.value })}
+                value={formData.work_position || ''}
+                onChange={(e) => setFormData({ ...formData, work_position: e.target.value })}
               />
             </div>
             <div className="form-group">
@@ -183,12 +221,24 @@ function StudentDetail() {
               />
             </div>
             <div className="form-group">
-              <label>สถานะ:</label>
+              <label>อาจารย์ที่ปรึกษาร่วม:</label>
               <input
                 type="text"
+                value={formData.co_advisor || ''}
+                onChange={(e) => setFormData({ ...formData, co_advisor: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label>สถานะ:</label>
+              <select
                 value={formData.status || ''}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              />
+              >
+                <option value="ปกติ">ปกติ</option>
+                <option value="พักการศึกษา">พักการศึกษา</option>
+                <option value="จบการศึกษา">จบการศึกษา</option>
+                <option value="ลาออก">ลาออก</option>
+              </select>
             </div>
           </div>
 

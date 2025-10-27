@@ -30,10 +30,11 @@ function StudentList() {
     }
   };
 
-  const filteredStudents = students.filter(student =>
-    student.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.student_id?.toString().includes(searchTerm)
-  );
+  const filteredStudents = students.filter(student => {
+    const fullName = `${student.prefix || ''} ${student.first_name || ''} ${student.last_name || ''}`.trim();
+    return fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.student_id?.toString().includes(searchTerm);
+  });
 
   return (
     <div className="student-list">
@@ -61,27 +62,30 @@ function StudentList() {
           </tr>
         </thead>
         <tbody>
-          {filteredStudents.map((student) => (
-            <tr key={student.student_id}>
-              <td>{student.student_id}</td>
-              <td>{student.full_name}</td>
-              <td>{student.age}</td>
-              <td>{student.phone}</td>
-              <td>{student.main_advisor}</td>
-              <td>{student.status || 'ไม่ระบุ'}</td>
-              <td>
-                <Link to={`/students/${student.student_id}`} className="btn-view">
-                  ดูรายละเอียด
-                </Link>
-                <button
-                  onClick={() => handleDelete(student.student_id)}
-                  className="btn-delete"
-                >
-                  ลบ
-                </button>
-              </td>
-            </tr>
-          ))}
+          {filteredStudents.map((student) => {
+            const fullName = `${student.prefix || ''} ${student.first_name || ''} ${student.last_name || ''}`.trim();
+            return (
+              <tr key={student.student_id}>
+                <td>{student.student_id}</td>
+                <td>{fullName}</td>
+                <td>{student.age}</td>
+                <td>{student.tel}</td>
+                <td>{student.main_advisor}</td>
+                <td>{student.status || 'ไม่ระบุ'}</td>
+                <td>
+                  <Link to={`/students/${student.student_id}`} className="btn-view">
+                    ดูรายละเอียด
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(student.student_id)}
+                    className="btn-delete"
+                  >
+                    ลบ
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 
